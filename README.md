@@ -1,64 +1,29 @@
-# 🔍 CryptoLens CLI
+# CryptoLens CLI
 
-> Real-time crypto market snapshot from the command line.
+> Archived: learning project, no longer maintained.
 
-Fetches Bitcoin, Ethereum and Litecoin prices alongside the Fear & Greed Index
-and displays a consolidated market report in seconds.
+Small async command-line tool that prints a one-shot crypto market report: current USD price and 24h change for BTC, ETH and LTC from the CoinGecko API, plus the Fear & Greed Index from alternative.me. Both requests run concurrently with `asyncio.gather()` over a shared `aiohttp` session. No API keys needed. Console messages are in Spanish.
 
-## Features
+It was my exercise in asyncio and dataclasses, and the starting point for [crypto-market-api](https://github.com/nachixxs/crypto-market-api).
 
--⚡ Concurrent API calls with `asyncio.gather()` — no waiting one by one
--💰 Live prices + 24h change for BTC, ETH and LTC (CoinGecko)
--🧠 Market sentiment index 0-100 (Fear & Greed Index)
--✅ Fully tested with pytest — no internet required to run tests
--🔑 No API keys needed — clone and run immediately
-
-## Installation
+## Run
 
 ```bash
-git clone https://github.com/nachixxs/cryptolens-cli.git
-cd cryptolens-cli
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+venv\Scripts\activate    # Windows; use source venv/bin/activate elsewhere
 pip install -r requirements.txt
-```
-
-## Usage
-
-```bash
 python main.py
 ```
 
-## Run tests
-
-```bash
-pytest tests/ -v
-```
-
-## Tech stack
-
-| Tool | Purpose |
-|---|---|
-| `asyncio` + `aiohttp` | Concurrent HTTP requests |
-| `dataclasses` | Typed data models |
-| `pytest` | Testing without internet dependency |
-
-## Project structure
+## Structure
 
 ```
-cryptolens-cli/
-├── cryptolens/
-│   ├── models.py      # Dataclasses
-│   ├── fetchers.py    # Async API calls
-│   └── report.py      # Console output
-├── tests/
-│   ├── test_models.py
-│   └── test_fetchers.py
-├── main.py
-└── requirements.txt
+cryptolens/
+  models.py     # dataclasses: CryptoPrice, FearGreedIndex, MarketReport
+  fetchers.py   # async fetchers for CoinGecko and Fear & Greed, with a 10 s timeout
+  report.py     # console output
+tests/          # 11 pytest tests on models and response parsing (no network)
+main.py
 ```
 
-## Author
-
-**Nacho Noguerol**
-[GitHub](https://github.com/nachixxs) · [LinkedIn](https://www.linkedin.com/in/ignacio-noguerol-54aa942b0/) · ignacionogpa@gmail.com
+Run the tests with `pytest tests/ -v`.
